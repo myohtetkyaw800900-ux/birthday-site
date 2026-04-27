@@ -1,7 +1,43 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  font-family: Inter, "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #341628;
+  background: #ff9db5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 body {
-  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
