@@ -60,7 +60,7 @@ export default function AudioToggle() {
 
   return (
     <button className="chip-button" type="button" onClick={toggle}>
-      Music: {enabled ? "On" : "Off"}
+      Music: {enabled ? "Off" : "On"}
     </button>
   );
 }
