@@ -41,8 +41,8 @@ const memories = [
 
 const slides = [
   {
-    eyebrow: "A small surprise",
-    title: "Happy Birthday",
+    eyebrow: "Happy Birthday",
+    title: "May ❤️",
     text: "I made this little page just for you, with a few sweet things I wanted to say.",
     button: "Open",
   },
@@ -220,7 +220,7 @@ export default function App() {
             )}
 
             <img className="finale-photo" src={preferredHeroImage} alt="Birthday photo" />
-            <h1 className="headline">I like you</h1>
+            <h1 className="headline">I miss you</h1>
             <p className="message">
               Happy Birthday. I hope today feels gentle, beautiful, and full of reasons to smile.
             </p>
