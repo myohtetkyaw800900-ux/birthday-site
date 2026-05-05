@@ -1,6 +1,7 @@
 .page-shell {
-  --bg-top: #ffb7cc;
-  --bg-bottom: #ff7b9c;
+  --bg-top: #c86af0;
+  --bg-mid: #ff89b2;
+  --bg-bottom: #ff6aa0;
   --surface: rgba(255, 250, 252, 0.76);
   --surface-strong: rgba(255, 245, 248, 0.92);
   --text: #5b2040;
@@ -13,14 +14,48 @@
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  isolation: isolate;
   background:
-    radial-gradient(circle at top left, rgba(255, 255, 255, 0.6), transparent 34%),
-    linear-gradient(160deg, var(--bg-top) 0%, #ff9aae 38%, var(--bg-bottom) 100%);
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.6), transparent 34%),
+    radial-gradient(circle at 70% 18%, rgba(255, 255, 255, 0.38), transparent 38%),
+    radial-gradient(circle at 46% 32%, rgba(255, 255, 255, 0.2), transparent 46%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 48%, var(--bg-bottom) 100%);
   padding: clamp(12px, 3vw, 24px);
   padding-top: max(clamp(12px, 3vw, 24px), env(safe-area-inset-top));
   padding-bottom: max(clamp(12px, 3vw, 24px), env(safe-area-inset-bottom));
   display: grid;
   place-items: center;
+}
+
+.page-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.36), transparent 42%),
+    radial-gradient(circle at 28% 10%, rgba(255, 255, 255, 0.22), transparent 48%),
+    radial-gradient(circle at 62% 16%, rgba(255, 255, 255, 0.28), transparent 48%),
+    radial-gradient(circle at 78% 30%, rgba(255, 255, 255, 0.22), transparent 56%);
+  opacity: 0.6;
+  mix-blend-mode: soft-light;
+}
+
+.page-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(110px 90px at 14% 92%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 70%),
+    radial-gradient(150px 110px at 32% 95%, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0) 72%),
+    radial-gradient(190px 140px at 52% 96%, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0) 74%),
+    radial-gradient(160px 120px at 72% 94%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 72%),
+    radial-gradient(120px 96px at 88% 93%, rgba(255, 255, 255, 0.66), rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, transparent 62%, rgba(255, 255, 255, 0.14) 82%, rgba(255, 255, 255, 0.32) 100%);
+  opacity: 0.85;
 }
 
 .page-glow {
@@ -31,6 +66,7 @@
   pointer-events: none;
   filter: blur(20px);
   opacity: 0.45;
+  z-index: 0;
 }
 
 .page-glow-left {
@@ -105,6 +141,8 @@
   position: relative;
   z-index: 1;
   width: min(100%, 1040px);
+  justify-self: center;
+  margin-inline: auto;
   background: rgba(255, 247, 250, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 32px;
@@ -194,16 +232,30 @@
   aspect-ratio: 4 / 5;
   border-radius: 28px;
   overflow: hidden;
+  position: relative;
   background: rgba(255, 255, 255, 0.26);
   box-shadow: 0 22px 50px rgba(102, 16, 57, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.55);
   max-height: min(46svh, 520px);
 }
 
+.hero-photo-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px);
+  opacity: 0.38;
+  transform: scale(1.08);
+  z-index: 0;
+}
+
 .hero-photo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
   border-radius: inherit;
 }
 
@@ -347,6 +399,50 @@
   line-height: 1.6;
 }
 
+.bottom-photo-card {
+  position: relative;
+  margin: 0 0 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(212, 60, 114, 0.12);
+  background: rgba(255, 255, 255, 0.22);
+  aspect-ratio: 16 / 9;
+  max-height: min(34svh, 260px);
+  display: grid;
+  place-items: center;
+  padding: 10px;
+}
+
+.bottom-photo-backdrop {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px);
+  opacity: 0.36;
+  transform: scale(1.08);
+  z-index: 0;
+}
+
+.bottom-photo-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.28));
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bottom-photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  border-radius: 18px;
+}
+
 .gallery {
   margin-top: 26px;
   display: grid;
@@ -361,14 +457,33 @@
   background: rgba(255, 255, 255, 0.22);
   border: 1px solid rgba(212, 60, 114, 0.12);
   aspect-ratio: 4 / 3;
-  max-height: min(42svh, 320px);
-  min-height: 200px;
+  max-height: min(46svh, 360px);
+  min-height: 220px;
   width: min(100%, 420px);
   margin-inline: auto;
-  padding: 12px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gallery-frame::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  display: grid;
+  place-items: center;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 
 .gallery-backdrop {
@@ -380,6 +495,7 @@
   opacity: 0.38;
   transform: scale(1.08);
   z-index: 0;
+  background-image: var(--bg-url);
 }
 
 .gallery-frame::after {
@@ -389,7 +505,7 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.28));
   opacity: 0.8;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .gallery-image {
@@ -397,50 +513,9 @@
   height: 100%;
   object-fit: contain;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   border-radius: 18px;
   overflow: hidden;
-}
-
-.gallery-nav {
-  position: absolute;
-  z-index: 2;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--accent-strong);
-  font-size: 1.6rem;
-  line-height: 1;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 18px 45px rgba(141, 24, 76, 0.16);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-.gallery-nav:hover {
-  background: rgba(255, 255, 255, 0.78);
-}
-
-.gallery-nav:active {
-  transform: translateY(-50%) scale(0.98);
-}
-
-.gallery-nav:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 3px;
-}
-
-.gallery-nav:first-of-type {
-  left: 14px;
-}
-
-.gallery-nav:last-of-type {
-  right: 14px;
 }
 
 .gallery-dots {
@@ -564,10 +639,44 @@
   font-size: 0.92rem;
 }
 
+.guestbook-entry-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .guestbook-entry-head span {
   color: rgba(143, 85, 113, 0.95);
   font-weight: 600;
   font-size: 0.86rem;
+}
+
+.guestbook-entry-delete {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 60, 114, 0.16);
+  background: rgba(255, 255, 255, 0.7);
+  color: rgba(143, 85, 113, 0.95);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.guestbook-entry-delete:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 22px rgba(141, 24, 76, 0.14);
+}
+
+.guestbook-entry-delete:active {
+  transform: translateY(0);
+}
+
+.guestbook-entry-delete:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 3px;
 }
 
 .guestbook-entry p {
@@ -772,21 +881,21 @@
     border-radius: 18px;
   }
 
-  .gallery-nav {
-    width: 40px;
-    height: 40px;
+  .bottom-photo-card {
+    max-height: min(34svh, 240px);
+    padding: 8px;
   }
 
   .gallery-frame {
-    aspect-ratio: 1 / 1;
-    max-height: min(32svh, 220px);
-    min-height: 176px;
-    width: min(100%, 360px);
-    padding: 10px;
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    max-height: min(46svh, 380px);
+    min-height: 240px;
   }
 
   .gallery-image {
     border-radius: 16px;
+    object-fit: cover;
   }
 
   .inline-photo-card {
@@ -822,5 +931,9 @@
   .copy-panel,
   .finale {
     padding-top: 18px;
+  }
+
+  .gallery-frame {
+    max-height: min(42svh, 320px);
   }
 }

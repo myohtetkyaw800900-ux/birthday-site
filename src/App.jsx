@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import Confetti from "react-confetti";
 import heroImage from "./assets/hero.png";
 import AudioToggle from "./components/AudioToggle.jsx";
-import Gallery from "./components/Gallery.jsx";
 import Guestbook from "./components/Guestbook.jsx";
 import FloatingDecor from "./components/FloatingDecor.jsx";
 import "./App.css";
@@ -57,12 +56,6 @@ const slides = [
     title: "The moments I keep",
     text: "Some memories stay because they are full of light, comfort, and your smile.",
     button: "Continue",
-  },
-  {
-    eyebrow: "Little gallery",
-    title: "Photo moments",
-    text: "A few snapshots I’d keep in my pocket forever.",
-    button: "Next",
   },
   {
     eyebrow: "Wish wall",
@@ -130,8 +123,11 @@ export default function App() {
 
   const currentSlide = slides[step];
   const showFinale = step === slides.length;
-  const compactVisualPanel = !showFinale && step >= 3;
-  const showInlineImage = !showFinale && (step === 4 || step === 5);
+  const compactVisualPanel = !showFinale && step >= 2;
+  const showGoodMemoriesImage = !showFinale && step === 2;
+  const showWishWallImage = !showFinale && step === 3;
+  const showOneMessageImage = !showFinale && step === 4;
+  const showAfterMessageImage = showGoodMemoriesImage;
 
   return (
     <main className="page-shell">
@@ -153,6 +149,11 @@ export default function App() {
           >
             <div className={compactVisualPanel ? "visual-panel compact" : "visual-panel"}>
               <div className="photo-frame">
+                <div
+                  className="hero-photo-backdrop"
+                  aria-hidden="true"
+                  style={{ backgroundImage: `url(${preferredHeroImage})` }}
+                />
                 <img className="hero-photo" src={preferredHeroImage} alt="Birthday photo" />
               </div>
               <div className="visual-badge">Birthday note</div>
@@ -170,16 +171,39 @@ export default function App() {
 
               <p className="eyebrow">{currentSlide.eyebrow}</p>
               <h1 className="headline">{currentSlide.title}</h1>
-              <p className="message">{currentSlide.text}</p>
 
-              {showInlineImage && (
-                <div className="inline-photo-card">
+              {showOneMessageImage && (
+                <div className="bottom-photo-card">
                   <div
-                    className="inline-photo-backdrop"
+                    className="bottom-photo-backdrop"
                     aria-hidden="true"
                     style={{ backgroundImage: `url(${preferredHeroImage})` }}
                   />
-                  <img className="inline-photo-image" src={preferredHeroImage} alt="Photo" />
+                  <img className="bottom-photo-image" src={preferredHeroImage} alt="Photo" />
+                </div>
+              )}
+
+              {showWishWallImage && (
+                <div className="bottom-photo-card">
+                  <div
+                    className="bottom-photo-backdrop"
+                    aria-hidden="true"
+                    style={{ backgroundImage: `url(${preferredHeroImage})` }}
+                  />
+                  <img className="bottom-photo-image" src={preferredHeroImage} alt="Photo" />
+                </div>
+              )}
+
+              <p className="message">{currentSlide.text}</p>
+
+              {showAfterMessageImage && (
+                <div className="bottom-photo-card">
+                  <div
+                    className="bottom-photo-backdrop"
+                    aria-hidden="true"
+                    style={{ backgroundImage: `url(${preferredHeroImage})` }}
+                  />
+                  <img className="bottom-photo-image" src={preferredHeroImage} alt="Photo" />
                 </div>
               )}
 
@@ -194,8 +218,7 @@ export default function App() {
                 </div>
               )}
 
-              {step === 3 && <Gallery fallbackImage={heroImage} />}
-              {step === 4 && <Guestbook />}
+              {step === 3 && <Guestbook />}
 
               <button className="primary-button" onClick={next}>
                 {currentSlide.button}

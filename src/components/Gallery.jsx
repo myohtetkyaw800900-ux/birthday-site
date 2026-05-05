@@ -1,5 +1,4 @@
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function loadGalleryImages() {
   const modules = import.meta.glob("../assets/gallery/*.{png,jpg,jpeg,webp}", {
@@ -19,35 +18,48 @@ export default function Gallery({ fallbackImage }) {
   }, [fallbackImage]);
 
   const [index, setIndex] = useState(0);
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return undefined;
+    if (!images.length) return undefined;
+
+    const handleResize = () => {
+      frame.scrollTo({ left: frame.clientWidth * index });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [images, index]);
 
   if (!images.length) return null;
 
-  const goPrev = () => setIndex((current) => (current - 1 + images.length) % images.length);
-  const goNext = () => setIndex((current) => (current + 1) % images.length);
-
   return (
     <section className="gallery">
-      <div className="gallery-frame">
-        <button className="gallery-nav" type="button" onClick={goPrev} aria-label="Previous photo">
-          ‹
-        </button>
-        <div
-          className="gallery-backdrop"
-          aria-hidden="true"
-          style={{ backgroundImage: `url(${images[index]})` }}
-        />
-        <motion.img
-          key={images[index]}
-          className="gallery-image"
-          src={images[index]}
-          alt="Gallery photo"
-          initial={{ opacity: 0, scale: 0.99 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
-        />
-        <button className="gallery-nav" type="button" onClick={goNext} aria-label="Next photo">
-          ›
-        </button>
+      <div
+        ref={frameRef}
+        className="gallery-frame"
+        role="region"
+        aria-label="Gallery photos"
+        onScroll={() => {
+          const frame = frameRef.current;
+          if (!frame) return;
+          const nextIndex = Math.round(frame.scrollLeft / Math.max(1, frame.clientWidth));
+          setIndex((current) => (current === nextIndex ? current : nextIndex));
+        }}
+      >
+        {images.map((url, slideIndex) => (
+          <div
+            key={url}
+            className="gallery-slide"
+            style={{ "--bg-url": `url(${url})` }}
+            aria-label={`Photo ${slideIndex + 1} of ${images.length}`}
+          >
+            <div className="gallery-backdrop" aria-hidden="true" />
+            <img className="gallery-image" src={url} alt={`Gallery photo ${slideIndex + 1}`} />
+          </div>
+        ))}
       </div>
 
       {images.length > 1 && (
@@ -57,7 +69,12 @@ export default function Gallery({ fallbackImage }) {
               key={`dot-${dotIndex}`}
               type="button"
               className={dotIndex === index ? "gallery-dot active" : "gallery-dot"}
-              onClick={() => setIndex(dotIndex)}
+              onClick={() => {
+                const frame = frameRef.current;
+                if (!frame) return;
+                frame.scrollTo({ left: frame.clientWidth * dotIndex, behavior: "smooth" });
+                setIndex(dotIndex);
+              }}
               aria-label={`Go to photo ${dotIndex + 1}`}
             />
           ))}

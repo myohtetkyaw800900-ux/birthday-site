@@ -65,6 +65,10 @@ export default function Guestbook() {
     setMessage("");
   };
 
+  const deleteEntry = (id) => {
+    setEntries((current) => current.filter((entry) => entry.id !== id));
+  };
+
   return (
     <section className="guestbook">
       <form className="guestbook-form" onSubmit={submit}>
@@ -107,7 +111,18 @@ export default function Guestbook() {
             <article key={entry.id} className="guestbook-entry" role="listitem">
               <div className="guestbook-entry-head">
                 <strong>{entry.name || "Anonymous"}</strong>
-                <span>{formatDate(entry.createdAt)}</span>
+                <div className="guestbook-entry-actions">
+                  <span>{formatDate(entry.createdAt)}</span>
+                  <button
+                    className="guestbook-entry-delete"
+                    type="button"
+                    onClick={() => deleteEntry(entry.id)}
+                    aria-label="Delete wish"
+                    title="Delete"
+                  >
+                    ✕
+                  </button>
+                </div>
               </div>
               <p>{entry.message}</p>
             </article>
